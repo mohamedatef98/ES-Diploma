@@ -7,11 +7,11 @@
 inline int min (int, int);
 
 int main (void) {
-    int number1, number2, number3;
+    int number1, number2, number3, smallest;
 
     scanf("%d%d%d", &number1, &number2, &number3);
 
-    int smallest = min(min(number1, number2), number3);
+    smallest = min(min(number1, number2), number3);
 
     printf("The smallest is %d.\n", smallest);
 

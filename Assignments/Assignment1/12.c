@@ -9,6 +9,7 @@ unsigned long long factorial (int);
 
 int main (void) {
     int number;
+    unsigned long long factorial_number
 
     printf("%s", "Enter a Positive Integer."
                  "\n"
@@ -21,7 +22,7 @@ int main (void) {
         return 1;
     }
 
-    unsigned long long factorial_number = factorial(number);
+    factorial_number = factorial(number);
 
     printf("The Factorial of %d is %llu.\n", number, factorial_number);
 

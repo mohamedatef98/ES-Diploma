@@ -8,7 +8,7 @@
 
 #include "stdio.h"
 
-#define NUM_ROWS 5
+#define NUM_ROWS 9
 
 
 int main (void) {
@@ -43,7 +43,7 @@ int main (void) {
         for(j = 0; j < y; ++j) printf("%s", "*");
 
         //draw X blanks
-        for(j = 0; j < x; ++j) printf("%s", " ");
+        //for(j = 0; j < x; ++j) printf("%s", " ");
 
         printf("%s", "\n");
         

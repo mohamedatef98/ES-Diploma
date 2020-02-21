@@ -8,6 +8,7 @@
 
 int main (void) {
     ENTERED_NUMBER_TYPE number;
+    int counter = 0;
 
     scanf("%llu", &number);
 
@@ -16,8 +17,6 @@ int main (void) {
 
     // this variable will be used to get the digits from the number
     ENTERED_NUMBER_TYPE temp = number;
-
-    int counter = 0;
 
 
     // each step of the loop we will get the last digit and print it

@@ -10,10 +10,11 @@ char is_prime(int);
 int main (void) {
 
     int number;
+    char c;
 
     scanf("%d", &number);
 
-    char c = is_prime(number);
+    c = is_prime(number);
 
     c ? printf("%d is prime.\n", number)
         : printf("%d isn't prime.\n", number);

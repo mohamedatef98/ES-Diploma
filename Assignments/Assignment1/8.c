@@ -8,16 +8,17 @@
 int main (void) {
 
     int number;
+    int root_number;
     
     scanf("%d", &number);
 
     // the square root of the entered number
-    float root_number = sqrt(number);
+    // stored in an int (to implicitly convert the float to int)
+    root_number = sqrt(number);
 
-    // check if the calculated square root isn't a float
-    char is_square = (int)root_number == root_number;
-
-    is_square == 1
+    // check if the calculated square root (as int) times itself 
+    // equals the number
+    number == root_number * root_number
         ? printf("%d is a perfect square.\n", number)
         : printf("%d isn't a perfect square.\n", number);
 

@@ -8,14 +8,14 @@
 
 int main (void) {
     char op;
+    float result;
+    float number1, number2;
 
     scanf("%c", &op);
 
-    int number1, number2;
+    scanf("%f%f", &number1, &number2);
 
-    scanf("%d%d", &number1, &number2);
-
-    float result;
+    
 
     switch (op) {
     case '+':
@@ -28,14 +28,14 @@ int main (void) {
         result = number1 * number2;
         break;
     case '/':
-        result = (float)number1 / number2;
+        result = number1 / number2;
         break;
     default:
         result = 0;
         break;
     }
 
-    printf("%d %c %d = %.2f\n", number1, op, number2, result);
+    printf("%.2f %c %.2f = %.2f\n", number1, op, number2, result);
 
     return 0;
 }
