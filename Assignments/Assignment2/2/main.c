@@ -39,5 +39,5 @@ int main (void) {
 
 
 char is_alphabetic(unsigned char c) {
-	return (c >= 'A' && c <= 'Z' + 26) || (c >= 'a' && c <= 'z' + 26);
+	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 }

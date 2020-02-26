@@ -15,45 +15,44 @@
 
 #include "stdio.h"
 
-void calculate(unsigned char op, int operand1, int operand2);
+float calculate(unsigned char op, int operand1, int operand2, char * err_ptr);
 
 int main (void) {
-    calculate('+', 1, 3);
+    int op1, op2;
+    char op, err;
+    float res;
 
-    calculate('+', 553, 863);
+    printf("Enter The Operator (+, -, *, /): \n");
+    scanf("%c", &op);
 
-    calculate('+', 3, -3);
+    printf("Enter Two Numbers: \n");
+    scanf("%d%d", &op1, &op2);
 
-    calculate('-', 10, 2);
+    res = calculate(op, op1, op2, &err);
+    if (!err) printf("%3d %c %3d = %10.6f", op1, op, op2, res);
+    else printf("Wrong Operator Entered.");
 
-    calculate('-', 2, 5);
-
-    calculate('*', 10, 3);
-
-    calculate('*', -2, -4);
-
-    calculate('/', 4, 2);
-
-    calculate('/', 10, 2);
+    printf("\n");
 
     return 0;
 }
 
-void calculate(unsigned char operation, int op1, int op2) {
+float calculate(unsigned char operation, int op1, int op2, char * err_ptr) {
 	switch(operation){
 	case '+':
-		printf("%d + %d = %d\n", op1, op2, op1 + op2);
-		return;
+		*err_ptr = 0;
+		return op1 + op2;
 	case '-':
-		printf("%d - %d = %d\n", op1, op2, op1 - op2);
-		return;
+		*err_ptr = 0;
+		return op1 - op2;
 	case '*':
-		printf("%d * %d = %d\n", op1, op2, op1 * op2);
-		return;
+		*err_ptr = 0;
+		return op1 * op2;
 	case '/':
-		printf("%d / %d = %d\n", op1, op2, op1 / op2);
-		return;
+		*err_ptr = 0;
+		return (float)op1 / op2;
 	default:
-		printf("%s", "Wrong Operation\n");
+		*err_ptr = 1;
+		return -1;
 	}
 }

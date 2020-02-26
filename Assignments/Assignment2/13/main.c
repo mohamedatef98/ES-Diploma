@@ -13,7 +13,6 @@
 
 
 #include <stdio.h>
-#include <math.h>
 
 int sum_and_floor(float, float);
 
@@ -29,5 +28,5 @@ int main (void) {
 }
 
 int sum_and_floor(float a, float b) {
-	return floor(a + b);
+	return (int)(a + b);
 }

@@ -36,14 +36,14 @@ int main (void) {
 }
 
 unsigned char countHoles(int num){
-	int count = 0;
-	char currentDigit;
-	char str[50];
-	sprintf(str, "%d", num);
+	int count, currentDigit;
 
-	int i = 0;
-	while ((currentDigit = str[i++]) != '\0') {
-		currentDigit = currentDigit - '0';
+	count = 0;
+	currentDigit = 0;
+	while (num > 0) {
+		currentDigit = num % 10;
+
+		num = num / 10;
 
 		switch(currentDigit){
 		case 0:

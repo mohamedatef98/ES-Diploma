@@ -25,7 +25,7 @@ int main (void) {
 }
 
 unsigned long long fib(unsigned int x) {
-	return x == 2 ? 1 :
-			x == 1 ? 0 :
-					fib(x - 1) + fib(x - 2);
+	return x == 1 || x == 0 ?
+			x :
+			fib(x - 1) + fib(x - 2);
 }
