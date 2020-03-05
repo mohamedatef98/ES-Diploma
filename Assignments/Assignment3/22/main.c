@@ -37,7 +37,6 @@ int main (void) {
 	print_arr(arr1, SIZE);
 
 	uniquify(arr1, SIZE, arr2, &new_size);
-//	shift_arr(arr, SIZE);
 
 	print_arr(arr2, new_size);
 	return 0;
@@ -48,14 +47,6 @@ void print_arr(const int * arr, const unsigned int size) {
 	for(i = 0; i < size; i++) printf("%d ", arr[i]);
 
 	printf("\n");
-}
-
-void shift_arr(int * const arr, const unsigned int size) {
-	unsigned int i = 0;
-	const unsigned int end = size - 1;
-	for (i = 0; i < end; ++i) {
-		arr[i] = arr[i + 1];
-	}
 }
 
 unsigned int uniquify(const int * const arr1, const unsigned int size1, int * const arr2, int * const new_size) {
