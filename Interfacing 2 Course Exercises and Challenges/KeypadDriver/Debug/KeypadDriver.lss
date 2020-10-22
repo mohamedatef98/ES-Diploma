@@ -1,0 +1,289 @@
+
+KeypadDriver.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001bc  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         00000648  00000000  00000000  00000210  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      000007d2  00000000  00000000  00000858  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 bd 00 	call	0x17a	; 0x17a <main>
+  64:	0c 94 dc 00 	jmp	0x1b8	; 0x1b8 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <Keypad_getPressedKey>:
+ *      Author: engmo
+ */
+
+#include "Keypad.h"
+
+uint8 Keypad_getPressedKey (void) {
+  6c:	df 93       	push	r29
+  6e:	cf 93       	push	r28
+  70:	00 d0       	rcall	.+0      	; 0x72 <Keypad_getPressedKey+0x6>
+  72:	cd b7       	in	r28, 0x3d	; 61
+  74:	de b7       	in	r29, 0x3e	; 62
+	uint8 row = 0, col = 0;
+  76:	1a 82       	std	Y+2, r1	; 0x02
+  78:	19 82       	std	Y+1, r1	; 0x01
+	/* clear all pins except pins not related to keypad */
+	KEYPAD_DDR &= ~((1 << (KEYPAD_ROWS + KEYPAD_COLS)) - 1);
+  7a:	a1 e3       	ldi	r26, 0x31	; 49
+  7c:	b0 e0       	ldi	r27, 0x00	; 0
+  7e:	e1 e3       	ldi	r30, 0x31	; 49
+  80:	f0 e0       	ldi	r31, 0x00	; 0
+  82:	80 81       	ld	r24, Z
+  84:	80 7f       	andi	r24, 0xF0	; 240
+  86:	8c 93       	st	X, r24
+
+	/* enable pull ups for row pins only */
+	KEYPAD_PORT |= (1 << (KEYPAD_ROWS)) - 1;
+  88:	a2 e3       	ldi	r26, 0x32	; 50
+  8a:	b0 e0       	ldi	r27, 0x00	; 0
+  8c:	e2 e3       	ldi	r30, 0x32	; 50
+  8e:	f0 e0       	ldi	r31, 0x00	; 0
+  90:	80 81       	ld	r24, Z
+  92:	83 60       	ori	r24, 0x03	; 3
+  94:	8c 93       	st	X, r24
+
+	while (1) {
+		for(row = 0; row < KEYPAD_ROWS; row++) {
+  96:	1a 82       	std	Y+2, r1	; 0x02
+  98:	6b c0       	rjmp	.+214    	; 0x170 <Keypad_getPressedKey+0x104>
+			for (col = 0; col < KEYPAD_COLS; col++) {
+  9a:	19 82       	std	Y+1, r1	; 0x01
+  9c:	62 c0       	rjmp	.+196    	; 0x162 <Keypad_getPressedKey+0xf6>
+				 */
+
+				/* 1. preserve other pins and clear all others
+				 * XXcccrrr -> XX000000
+				 */
+				KEYPAD_DDR &= ~((1 << (KEYPAD_ROWS + KEYPAD_COLS)) - 1);
+  9e:	a1 e3       	ldi	r26, 0x31	; 49
+  a0:	b0 e0       	ldi	r27, 0x00	; 0
+  a2:	e1 e3       	ldi	r30, 0x31	; 49
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+  a6:	80 81       	ld	r24, Z
+  a8:	80 7f       	andi	r24, 0xF0	; 240
+  aa:	8c 93       	st	X, r24
+
+				/* 2. set the current col as output */
+				KEYPAD_DDR |= (1 << (col+KEYPAD_ROWS));
+  ac:	a1 e3       	ldi	r26, 0x31	; 49
+  ae:	b0 e0       	ldi	r27, 0x00	; 0
+  b0:	e1 e3       	ldi	r30, 0x31	; 49
+  b2:	f0 e0       	ldi	r31, 0x00	; 0
+  b4:	80 81       	ld	r24, Z
+  b6:	48 2f       	mov	r20, r24
+  b8:	89 81       	ldd	r24, Y+1	; 0x01
+  ba:	88 2f       	mov	r24, r24
+  bc:	90 e0       	ldi	r25, 0x00	; 0
+  be:	9c 01       	movw	r18, r24
+  c0:	2e 5f       	subi	r18, 0xFE	; 254
+  c2:	3f 4f       	sbci	r19, 0xFF	; 255
+  c4:	81 e0       	ldi	r24, 0x01	; 1
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	02 c0       	rjmp	.+4      	; 0xce <Keypad_getPressedKey+0x62>
+  ca:	88 0f       	add	r24, r24
+  cc:	99 1f       	adc	r25, r25
+  ce:	2a 95       	dec	r18
+  d0:	e2 f7       	brpl	.-8      	; 0xca <Keypad_getPressedKey+0x5e>
+  d2:	84 2b       	or	r24, r20
+  d4:	8c 93       	st	X, r24
+
+				/* 3. preserve rows and clear others */
+				KEYPAD_DDR |= (KEYPAD_DDR & ~((1 << (KEYPAD_ROWS)) - 1));
+  d6:	a1 e3       	ldi	r26, 0x31	; 49
+  d8:	b0 e0       	ldi	r27, 0x00	; 0
+  da:	e1 e3       	ldi	r30, 0x31	; 49
+  dc:	f0 e0       	ldi	r31, 0x00	; 0
+  de:	80 81       	ld	r24, Z
+  e0:	98 2f       	mov	r25, r24
+  e2:	e1 e3       	ldi	r30, 0x31	; 49
+  e4:	f0 e0       	ldi	r31, 0x00	; 0
+  e6:	80 81       	ld	r24, Z
+  e8:	8c 7f       	andi	r24, 0xFC	; 252
+  ea:	89 2b       	or	r24, r25
+  ec:	8c 93       	st	X, r24
+
+				KEYPAD_PORT &= ~(1 << (col+KEYPAD_ROWS));
+  ee:	a2 e3       	ldi	r26, 0x32	; 50
+  f0:	b0 e0       	ldi	r27, 0x00	; 0
+  f2:	e2 e3       	ldi	r30, 0x32	; 50
+  f4:	f0 e0       	ldi	r31, 0x00	; 0
+  f6:	80 81       	ld	r24, Z
+  f8:	48 2f       	mov	r20, r24
+  fa:	89 81       	ldd	r24, Y+1	; 0x01
+  fc:	88 2f       	mov	r24, r24
+  fe:	90 e0       	ldi	r25, 0x00	; 0
+ 100:	9c 01       	movw	r18, r24
+ 102:	2e 5f       	subi	r18, 0xFE	; 254
+ 104:	3f 4f       	sbci	r19, 0xFF	; 255
+ 106:	81 e0       	ldi	r24, 0x01	; 1
+ 108:	90 e0       	ldi	r25, 0x00	; 0
+ 10a:	02 c0       	rjmp	.+4      	; 0x110 <Keypad_getPressedKey+0xa4>
+ 10c:	88 0f       	add	r24, r24
+ 10e:	99 1f       	adc	r25, r25
+ 110:	2a 95       	dec	r18
+ 112:	e2 f7       	brpl	.-8      	; 0x10c <Keypad_getPressedKey+0xa0>
+ 114:	80 95       	com	r24
+ 116:	84 23       	and	r24, r20
+ 118:	8c 93       	st	X, r24
+
+				if(BIT_IS_CLEAR(KEYPAD_PIN, row)) {
+ 11a:	e0 e3       	ldi	r30, 0x30	; 48
+ 11c:	f0 e0       	ldi	r31, 0x00	; 0
+ 11e:	80 81       	ld	r24, Z
+ 120:	28 2f       	mov	r18, r24
+ 122:	30 e0       	ldi	r19, 0x00	; 0
+ 124:	8a 81       	ldd	r24, Y+2	; 0x02
+ 126:	88 2f       	mov	r24, r24
+ 128:	90 e0       	ldi	r25, 0x00	; 0
+ 12a:	a9 01       	movw	r20, r18
+ 12c:	02 c0       	rjmp	.+4      	; 0x132 <Keypad_getPressedKey+0xc6>
+ 12e:	55 95       	asr	r21
+ 130:	47 95       	ror	r20
+ 132:	8a 95       	dec	r24
+ 134:	e2 f7       	brpl	.-8      	; 0x12e <Keypad_getPressedKey+0xc2>
+ 136:	ca 01       	movw	r24, r20
+ 138:	81 70       	andi	r24, 0x01	; 1
+ 13a:	90 70       	andi	r25, 0x00	; 0
+ 13c:	00 97       	sbiw	r24, 0x00	; 0
+ 13e:	71 f4       	brne	.+28     	; 0x15c <Keypad_getPressedKey+0xf0>
+					return row * KEYPAD_COLS + col + 1;
+ 140:	8a 81       	ldd	r24, Y+2	; 0x02
+ 142:	88 2f       	mov	r24, r24
+ 144:	90 e0       	ldi	r25, 0x00	; 0
+ 146:	88 0f       	add	r24, r24
+ 148:	99 1f       	adc	r25, r25
+ 14a:	98 2f       	mov	r25, r24
+ 14c:	89 81       	ldd	r24, Y+1	; 0x01
+ 14e:	89 0f       	add	r24, r25
+ 150:	8f 5f       	subi	r24, 0xFF	; 255
+				}
+			}
+		}
+	}
+}
+ 152:	0f 90       	pop	r0
+ 154:	0f 90       	pop	r0
+ 156:	cf 91       	pop	r28
+ 158:	df 91       	pop	r29
+ 15a:	08 95       	ret
+	/* enable pull ups for row pins only */
+	KEYPAD_PORT |= (1 << (KEYPAD_ROWS)) - 1;
+
+	while (1) {
+		for(row = 0; row < KEYPAD_ROWS; row++) {
+			for (col = 0; col < KEYPAD_COLS; col++) {
+ 15c:	89 81       	ldd	r24, Y+1	; 0x01
+ 15e:	8f 5f       	subi	r24, 0xFF	; 255
+ 160:	89 83       	std	Y+1, r24	; 0x01
+ 162:	89 81       	ldd	r24, Y+1	; 0x01
+ 164:	82 30       	cpi	r24, 0x02	; 2
+ 166:	08 f4       	brcc	.+2      	; 0x16a <Keypad_getPressedKey+0xfe>
+ 168:	9a cf       	rjmp	.-204    	; 0x9e <Keypad_getPressedKey+0x32>
+
+	/* enable pull ups for row pins only */
+	KEYPAD_PORT |= (1 << (KEYPAD_ROWS)) - 1;
+
+	while (1) {
+		for(row = 0; row < KEYPAD_ROWS; row++) {
+ 16a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 16c:	8f 5f       	subi	r24, 0xFF	; 255
+ 16e:	8a 83       	std	Y+2, r24	; 0x02
+ 170:	8a 81       	ldd	r24, Y+2	; 0x02
+ 172:	82 30       	cpi	r24, 0x02	; 2
+ 174:	08 f4       	brcc	.+2      	; 0x178 <Keypad_getPressedKey+0x10c>
+ 176:	91 cf       	rjmp	.-222    	; 0x9a <Keypad_getPressedKey+0x2e>
+ 178:	8e cf       	rjmp	.-228    	; 0x96 <Keypad_getPressedKey+0x2a>
+
+0000017a <main>:
+ */
+
+
+#include "Keypad.h"
+
+int main (void) {
+ 17a:	df 93       	push	r29
+ 17c:	cf 93       	push	r28
+ 17e:	0f 92       	push	r0
+ 180:	cd b7       	in	r28, 0x3d	; 61
+ 182:	de b7       	in	r29, 0x3e	; 62
+	uint8 key = 0;
+ 184:	19 82       	std	Y+1, r1	; 0x01
+	DDRC = 0;
+ 186:	e4 e3       	ldi	r30, 0x34	; 52
+ 188:	f0 e0       	ldi	r31, 0x00	; 0
+ 18a:	10 82       	st	Z, r1
+	DDRD |= (1 <<  PD7);
+ 18c:	a1 e3       	ldi	r26, 0x31	; 49
+ 18e:	b0 e0       	ldi	r27, 0x00	; 0
+ 190:	e1 e3       	ldi	r30, 0x31	; 49
+ 192:	f0 e0       	ldi	r31, 0x00	; 0
+ 194:	80 81       	ld	r24, Z
+ 196:	80 68       	ori	r24, 0x80	; 128
+ 198:	8c 93       	st	X, r24
+
+	PORTD &= ~((1 << PD7));
+ 19a:	a2 e3       	ldi	r26, 0x32	; 50
+ 19c:	b0 e0       	ldi	r27, 0x00	; 0
+ 19e:	e2 e3       	ldi	r30, 0x32	; 50
+ 1a0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a2:	80 81       	ld	r24, Z
+ 1a4:	8f 77       	andi	r24, 0x7F	; 127
+ 1a6:	8c 93       	st	X, r24
+
+	while(1) {
+		key = Keypad_getPressedKey();
+ 1a8:	0e 94 36 00 	call	0x6c	; 0x6c <Keypad_getPressedKey>
+ 1ac:	89 83       	std	Y+1, r24	; 0x01
+		PORTC = key;
+ 1ae:	e5 e3       	ldi	r30, 0x35	; 53
+ 1b0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b2:	89 81       	ldd	r24, Y+1	; 0x01
+ 1b4:	80 83       	st	Z, r24
+ 1b6:	f8 cf       	rjmp	.-16     	; 0x1a8 <main+0x2e>
+
+000001b8 <_exit>:
+ 1b8:	f8 94       	cli
+
+000001ba <__stop_program>:
+ 1ba:	ff cf       	rjmp	.-2      	; 0x1ba <__stop_program>
