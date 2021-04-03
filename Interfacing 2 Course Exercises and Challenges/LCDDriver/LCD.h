@@ -12,14 +12,18 @@
 #include "micro_config.h"
 #include "common_macros.h"
 
-#define RS PD4
-#define RW PD5
-#define E PD6
+/*
+ *
+ * Four bit mode LCD Driver, Data pins should be connected at PX4 - PX7
+ */
 
-#define DATABUS PORTC
-#define CTLPORT PORTD
-#define DATABUSDIR DDRC
-#define CTLPORTDIR DDRD
+#define RS PA0
+#define RW PA1
+#define E PA2
+
+#define DATABUS PORTA
+#define DATABUSDIR DDRA
+
 
 void LCD_init (void);
 

@@ -227,6 +227,12 @@
         	
     </storageModule>
     	
+    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+    	
+    <storageModule moduleId="refreshScope"/>
+    	
+    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+    	
     <storageModule moduleId="scannerConfiguration">
         		
         <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -236,13 +242,15 @@
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
             		
         </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.1432705413;de.innot.avreclipse.configuration.app.debug.1432705413.;de.innot.avreclipse.tool.compiler.winavr.app.debug.359414945;de.innot.avreclipse.compiler.winavr.input.2065021276">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
+            		
+        </scannerConfigBuildInfo>
         	
     </storageModule>
     	
-    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-    	
-    <storageModule moduleId="refreshScope"/>
-    	
-    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+    <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
     
 </cproject>

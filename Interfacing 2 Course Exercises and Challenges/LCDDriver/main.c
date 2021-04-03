@@ -9,12 +9,14 @@
 #include "LCD.h"
 
 int main (void) {
+	uint8 counter = 0;
 	LCD_init();
-	LCD_displayString("M7med");
-	_delay_ms(1000);
-	LCD_clearScreen();
-	LCD_goToRowCol(1, 4);
-	LCD_displayInteger(30);
 
-	while(1);
+
+	while(1) {
+		LCD_displayInteger(counter++);
+		_delay_ms(1000);
+		LCD_clearScreen();
+
+	}
 }

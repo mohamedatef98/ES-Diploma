@@ -10,36 +10,46 @@
 #include <stdio.h>
 
 void LCD_init (void) {
-	CTLPORTDIR |= (1 << RS) | (1 << RW) | (1 << E);
-	DATABUSDIR = ~0;
+	DATABUSDIR |= 0xF0; /* Make data pins output */
+	DATABUSDIR |= (1 << RS) | (1 << RW) | (1 << E); /* Make Control pins output */
 
-	LCD_sendCommand(0x38);
+	_delay_ms(20);
+	LCD_sendCommand(0x33);
+	LCD_sendCommand(0x32);
+	LCD_sendCommand(0x28);
 	LCD_sendCommand(0x0C);
+	LCD_sendCommand(0x06);
 	LCD_sendCommand(0x01);
 }
 
 void LCD_sendCommand (const uint8 command) {
-	CLEAR_BIT(CTLPORT, RS);
-	CLEAR_BIT(CTLPORT, RW);
-	_delay_ms(1);
-	SET_BIT(CTLPORT, E);
-	_delay_ms(1);
-	DATABUS = command;
-	_delay_ms(1);
-	CLEAR_BIT(CTLPORT, E);
-	_delay_ms(1);
+	DATABUS = (DATABUS & 0x0F) | (command & 0xF0);
+	CLEAR_BIT(DATABUS, RS);
+	CLEAR_BIT(DATABUS, RW);
+	SET_BIT(DATABUS, E);
+	_delay_us(1);
+	CLEAR_BIT(DATABUS, E);
+	_delay_us(200);
+	DATABUS = (DATABUS & 0x0F) | (command << 4);
+	SET_BIT(DATABUS, E);
+	_delay_us(1);
+	CLEAR_BIT(DATABUS, E);
+	_delay_ms(2);
 }
 
 void LCD_sendData (const uint8 data) {
-	SET_BIT(CTLPORT, RS);
-	CLEAR_BIT(CTLPORT, RW);
-	_delay_ms(1);
-	SET_BIT(CTLPORT, E);
-	_delay_ms(1);
-	DATABUS = data;
-	_delay_ms(1);
-	CLEAR_BIT(CTLPORT, E);
-	_delay_ms(1);
+	DATABUS = (DATABUS & 0x0F) | (data & 0xF0);
+	SET_BIT(DATABUS, RS);
+	CLEAR_BIT(DATABUS, RW);
+	SET_BIT(DATABUS, E);
+	_delay_us(1);
+	CLEAR_BIT(DATABUS, E);
+	_delay_us(200);
+	DATABUS = (DATABUS & 0x0F) | (data << 4);
+	SET_BIT(DATABUS, E);
+	_delay_us(1);
+	CLEAR_BIT(DATABUS, E);
+	_delay_ms(2);
 }
 
 void LCD_displayString (const uint8 * str) {
